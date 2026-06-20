@@ -55,6 +55,9 @@ async function init() {
       const playlist = playlists.find(p => (p.name || 'Unnamed Playlist') === customPlaylistName);
       if (playlist && playlist.url) {
         allChannels = await fetchAndParseM3U(playlist.url).catch(() => []);
+      } else {
+        showPlayerError(`Playlist not found: ${escHtml(customPlaylistName)}.<br><br>You might have renamed or deleted this playlist.`, false);
+        return;
       }
     } else {
       allChannels = await loadChannels();

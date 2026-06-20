@@ -121,6 +121,7 @@ async function loadAndRender(forceReload = false) {
       const promises = playlists.map(async (p) => {
         try {
           const chs = await fetchAndParseM3U(p.url);
+          chs.forEach(ch => ch.playlistName = p.name || 'Unnamed Playlist');
           state.customChannels[p.id] = chs;
         } catch (e) {
           console.warn(`Failed to load ${p.name}: ${e.message}`);

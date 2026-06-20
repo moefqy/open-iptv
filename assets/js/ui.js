@@ -24,7 +24,7 @@ function createChannelCard(ch, customPlaylistName) {
   const card = document.createElement('a');
   card.className = 'channel-card';
   if (ch.isCustom) {
-    const pName = encodeURIComponent((customPlaylistName || 'Unnamed Playlist').trim());
+    const pName = encodeURIComponent((ch.playlistName || customPlaylistName || 'Unnamed Playlist').trim());
     card.href = `./watch/${pName}/${ch.slug}`;
   } else {
     card.href = `./watch/${ch.slug}`;
