@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Watch live TV on Open IPTV." />
+  <title>Open IPTV — Web Player</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    crossorigin="anonymous" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/components.css" />
+  <link rel="stylesheet" href="/assets/css/player.css" />
+</head>
+
+<body class="player-page">
+  <!-- Player Header -->
+  <header class="player-header" role="banner">
+    <!-- Back button -->
+    <a href="javascript:history.back()" class="player-back-btn" aria-label="Go back to channel list">
+      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+      <span>Back</span>
+    </a>
+    <!-- Channel info in header -->
+    <div class="player-header-channel">
+      <div class="player-header-info">
+        <div id="header-channel-name" class="player-header-name">Loading...</div>
+      </div>
+    </div>
+    <div class="header-spacer"></div>
+    <!-- Live Badge -->
+    <div class="player-header-meta player-header-meta-flex">
+      <span class="player-header-live">
+        LIVE
+      </span>
+    </div>
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+      <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+      <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+    </button>
+  </header>
+  <!-- Player Main -->
+  <main class="player-main" id="main-content">
+    <!-- Channel Info Panel -->
+    <section class="player-info-panel" aria-label="Channel information">
+      <div class="player-info-card">
+
+        <!-- Video Container -->
+        <div class="player-video-wrap" role="region" aria-label="Video player">
+          <video id="player-video" controls playsinline aria-label="Live stream player"></video>
+          <iframe id="player-iframe" class="player-iframe-hidden"
+            allowfullscreen allow="autoplay; encrypted-media"></iframe>
+          <!-- Loading overlay -->
+          <div id="video-loading" class="video-loading" role="status" aria-live="polite">
+            <div class="loading-spinner" aria-hidden="true"></div>
+            <span class="loading-label">Connecting to stream...</span>
+          </div>
+          <!-- Error overlay -->
+          <div id="video-error" class="video-error" role="alert" aria-live="assertive">
+            <div class="video-error__icon">
+              <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+            </div>
+            <div class="video-error__title">Stream Unavailable</div>
+            <p id="video-error-desc" class="video-error__desc">
+              The stream could not be loaded.
+            </p>
+            <button id="retry-btn" class="btn btn-primary" type="button">
+              <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
+              Retry
+            </button>
+          </div>
+        </div>
+        <div class="player-info-inner">
+          <!-- Logo -->
+          <div class="player-info-logo-wrap">
+            <img id="info-channel-logo" class="player-info-logo" src="" alt="Channel logo" />
+            <span id="info-channel-initials" class="player-info-initials" aria-hidden="true"></span>
+          </div>
+          <!-- Info -->
+          <div class="player-info-details">
+            <h1 id="info-channel-name" class="player-info-name">Loading...</h1>
+            <div id="info-channel-badges" class="player-info-badges"></div>
+          </div>
+        </div>
+        <!-- Stream URL -->
+        <div class="player-stream-row">
+          <span class="player-stream-label">Stream URL</span>
+          <span id="info-stream-url" class="player-stream-url" aria-label="Stream URL"></span>
+          <button id="copy-url-btn" class="copy-url-btn" type="button" aria-label="Copy stream URL">
+            <i class="fa-regular fa-copy" aria-hidden="true"></i>
+            Copy
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Epg / Now Playing Panel -->
+    <section class="player-epg-panel epg-panel-hidden" id="epg-panel" aria-label="TV Guide">
+      <div class="player-info-card">
+
+        <!-- EPG Header -->
+        <div class="epg-header">
+          <i class="fa-solid fa-tv epg-header-icon"></i>
+          <h2 class="epg-header-title">TV Guide</h2>
+        </div>
+        <!-- EPG Content -->
+        <div class="player-info-inner epg-content-wrap">
+
+          <div id="epg-current" class="epg-item epg-item-current">
+            <div class="epg-indicator"></div>
+            <div class="epg-label">Now Playing</div>
+            <div id="epg-current-title" class="epg-title epg-title-large">Loading...</div>
+            <div id="epg-current-time" class="epg-time epg-time-margin"></div>
+            <div id="epg-current-desc" class="epg-desc"></div>
+          </div>
+          <div id="epg-next" class="epg-item-next epg-hidden">
+            <div class="epg-label">Up Next</div>
+            <div id="epg-next-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <footer class="app-footer app-footer-centered" role="contentinfo">
+    <div class="footer-support-wrap">
+      <a href="https://buymeacoffee.com/moefqy" target="_blank" rel="noopener noreferrer" class="btn btn-primary no-underline">
+        <i class="fa-solid fa-heart"></i> Support Project
+      </a>
+    </div>
+    <div class="footer-info-wrap">
+      <p class="m-0">
+        Open IPTV is a standalone media player. We do not host or distribute any content; users must provide their own playlists.
+      </p>
+      <p class="footer-copyright">
+        &copy; 2026 <a href="https://moefqy.com" target="_blank" rel="noopener noreferrer" class="footer-link no-underline">A Muh Mufqi Zuhudi</a>. All rights reserved.
+      </p>
+    </div>
+  </footer>
+  <!-- HLS.js -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
+  <!-- Player App -->
+  <script type="module" src="/assets/js/player.js?v=3"></script>
+</body>
+
+</html>

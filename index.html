@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Open IPTV — Free live TV channel browser. Watch thousands of channels worldwide, organized by category. No subscription required." />
+  <meta property="og:title" content="Open IPTV — Free Live TV" />
+  <meta property="og:description"
+    content="Browse and watch thousands of free live TV channels organized by category." />
+  <meta property="og:type" content="website" />
+  <title>Open IPTV — Free Live TV</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
+  <!-- FontAwesome & Flag Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.2.1/css/flag-icons.min.css"
+    crossorigin="anonymous" />
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/components.css" />
+</head>
+
+<body>
+  <!-- App Header -->
+  <header class="app-header" role="banner">
+    <!-- Logo -->
+    <a href="index.html" class="logo-wrap" aria-label="Open IPTV — Home">
+      <img src="/assets/img/apple-touch-icon.png" alt="Open IPTV logo" width="36" height="36" />
+      <span class="logo-text">Open IPTV</span>
+    </a>
+    <div class="header-spacer"></div>
+    <!-- Search -->
+    <button id="search-modal-btn" class="theme-toggle" type="button" aria-label="Open search">
+      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+    </button>
+    <!-- Add Playlist -->
+    <button id="add-playlist-btn" class="theme-toggle" type="button" aria-label="Add custom playlist">
+      <i class="fa-solid fa-plus" aria-hidden="true"></i>
+    </button>
+    <!-- Companion Extension -->
+    <button id="companion-modal-btn" class="theme-toggle" type="button" aria-label="Open Companion Extension info">
+      <i class="fa-solid fa-puzzle-piece" aria-hidden="true"></i>
+    </button>
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+      <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+      <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+    </button>
+  </header>
+  <!-- Filters Bar -->
+  <section class="filters-bar-wrap" aria-label="Channel filters">
+    <div class="filter-modes" id="filter-modes">
+      <button class="filter-mode-btn active" data-mode="all" type="button">All</button>
+    </div>
+    <div class="filter-sublist-wrap filter-hidden" id="filter-sublist-wrap">
+      <div id="filter-sublist" class="filter-sublist"></div>
+    </div>
+  </section>
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+    <!-- Stats Bar -->
+    <div class="stats-bar" role="status" aria-live="polite">
+      <span id="stats-text" class="stats-text">Loading channels...</span>
+
+      <div id="secondary-filter-wrap" class="secondary-filter-wrap filter-hidden">
+        <button id="secondary-filter-btn" class="secondary-filter-btn" type="button" aria-label="Secondary filter">
+          <i class="fa-solid fa-filter"></i>
+        </button>
+      </div>
+    </div>
+    <!-- Channel Grid -->
+    <section aria-label="Channel list">
+      <div id="channel-grid" class="channel-grid" role="list"></div>
+    </section>
+    <!-- Pagination -->
+    <nav id="pagination" class="pagination-wrap" aria-label="Page navigation"></nav>
+  </main>
+  <!-- Footer -->
+  <footer class="app-footer text-center" role="contentinfo">
+    <div class="footer-support-wrap">
+      <a href="https://buymeacoffee.com/moefqy" target="_blank" rel="noopener noreferrer"
+        class="btn btn-primary no-underline">
+        <i class="fa-solid fa-heart"></i> Support Project
+      </a>
+    </div>
+    <div class="footer-info-wrap">
+      <p class="m-0">
+        Open IPTV is a standalone media player. We do not host or distribute any content; users must provide their own playlists.
+      </p>
+      <p class="footer-copyright">
+        &copy; 2026 <a href="https://moefqy.com" target="_blank" rel="noopener noreferrer"
+          class="footer-link no-underline">A Muh Mufqi Zuhudi</a>. All rights reserved.
+      </p>
+    </div>
+  </footer>
+  <!-- Playlist Modal -->
+  <dialog id="playlist-dialog" aria-labelledby="playlist-modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="playlist-modal-title" class="modal-title">
+          <i class="fa-solid fa-list-ul" aria-hidden="true"></i>
+          Custom Playlist
+        </h2>
+        <button id="playlist-close" class="modal-close" type="button" aria-label="Close">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="playlist-modal-body">
+        <!-- List View -->
+        <div id="playlist-list-view">
+          <div id="playlist-list-container" class="playlist-list-container">
+            <!-- Playlist items dynamically rendered here -->
+          </div>
+          <button id="add-new-playlist-btn" class="btn btn-primary btn-full-width mt-4 justify-center">
+            <i class="fa-solid fa-plus"></i> Add New Playlist
+          </button>
+        </div>
+        <!-- Form View -->
+        <div id="playlist-form-view" class="playlist-form-hidden">
+          <input type="hidden" id="playlist-id-input" value="" />
+          <!-- Name Input -->
+          <div class="form-group">
+            <label for="playlist-name-input" class="form-label">Playlist Name</label>
+            <input type="text" id="playlist-name-input" class="form-input" placeholder="e.g. My Sports Channels"
+              autocomplete="off" maxlength="30" />
+          </div>
+          <!-- URL Input -->
+          <div class="form-group">
+            <label for="playlist-url-input" class="form-label">M3U Playlist URL</label>
+            <input type="url" id="playlist-url-input" class="form-input"
+              placeholder="https://example.com/playlist.m3u" autocomplete="off" />
+            <p class="form-hint">
+              <i class="fa-solid fa-circle-info fa-xs" aria-hidden="true"></i>
+              Paste any <code>.m3u</code> or <code>.m3u8</code> playlist URL to get started
+            </p>
+          </div>
+
+          <div class="modal-form-actions">
+            <button id="playlist-cancel-btn" class="btn btn-ghost" type="button">Cancel</button>
+            <button id="playlist-save-btn" class="btn btn-primary" type="button">
+              <i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i> Save Playlist
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Secondary Filter Modal -->
+  <dialog id="secondary-filter-dialog" aria-labelledby="secondary-filter-title">
+    <div class="modal-box modal-box--large">
+      <div class="modal-header">
+        <h2 id="secondary-filter-title" class="modal-title" style="display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-filter" aria-hidden="true"></i>
+          <span>Filter by:</span>
+          <div class="filter-dropdown-wrap">
+            <select id="secondary-filter-type-select" class="filter-dropdown-select"></select>
+            <i class="fa-solid fa-chevron-down dropdown-icon" aria-hidden="true"></i>
+          </div>
+        </h2>
+        <button id="secondary-filter-close" class="modal-close" type="button" aria-label="Close" autofocus>
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body modal-scrollable">
+        <div id="secondary-filter-grid" class="secondary-filter-grid">
+          <!-- Populated dynamically with chips -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="secondary-filter-clear-btn" class="btn btn-ghost" type="button">
+          Clear
+        </button>
+        <button id="secondary-filter-apply-btn" class="btn btn-primary" type="button">
+          Apply
+        </button>
+      </div>
+    </div>
+  </dialog>
+  <!-- Search Modal -->
+  <dialog id="search-dialog" aria-labelledby="search-modal-title">
+    <div class="modal-box">
+      <div class="modal-header modal-header-centered">
+        <h2 id="search-modal-title" class="modal-title">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          Search Channels
+        </h2>
+        <button id="search-close" class="modal-close modal-close-absolute" type="button" aria-label="Close">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body pt-10">
+        <div class="search-input-wrap">
+          <i class="fa-solid fa-magnifying-glass search-input-icon"></i>
+          <input type="search" id="search-input" class="form-input search-input-field" placeholder="Type to search..."
+            autocomplete="off" spellcheck="false" aria-label="Search channels" />
+          <button id="search-clear" type="button" aria-label="Clear search" class="search-input-clear">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="search-execute-btn" class="btn btn-primary btn-full-width justify-center" type="button">
+          Search
+        </button>
+      </div>
+    </div>
+  </dialog>
+  <!-- Companion Modal -->
+  <dialog id="companion-dialog" aria-labelledby="companion-modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="companion-modal-title" class="modal-title">
+          <i class="fa-solid fa-puzzle-piece text-primary" aria-hidden="true"></i>
+          Companion Extension
+        </h2>
+        <button id="companion-close" class="modal-close" type="button" aria-label="Close">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body companion-modal-body">
+        <i class="fa-solid fa-shield-halved companion-icon"></i>
+        <h3 class="companion-title">CORS Bypass & TV Guides</h3>
+        <p class="companion-desc">
+          Improve playback compatibility for your personal playlists by resolving cross-origin (CORS) restrictions, and 
+          enhance your viewing experience by loading custom XMLTV guides for real-time schedules.
+        </p>
+        <div class="companion-btn-wrap">
+          <a href="#" class="btn btn-primary no-underline">
+            <i class="fa-brands fa-chrome"></i> Chrome
+          </a>
+          <a href="#" class="btn btn-firefox no-underline">
+            <i class="fa-brands fa-firefox-browser"></i> Firefox
+          </a>
+        </div>
+      </div>
+    </div>
+  </dialog>
+  <!-- HLS.js -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
+  <!-- App -->
+  <script type="module" src="/assets/js/app.js?v=3"></script>
+</body>
+
+</html>
